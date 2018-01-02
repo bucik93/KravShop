@@ -1,0 +1,55 @@
+﻿@model Krav_shop.Models.Produkt
+@using Krav_shop.Infrastructure
+@{
+    ViewBag.Title = "Szczegoly";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="ListaKategoriZawartosc">
+    @Html.Action("KategorieMenu")
+    <div id="KategorieListPrawaSekcja">
+        <div id="Breadcrumb">
+            <img src="../Content/Images/dommaly.png" />
+            <a href="link">
+                @Html.MvcSiteMap().SiteMapPath()
+            </a>
+        </div>
+        <section id="SekcjaProdukt">
+            <div id="ProduktLewa">
+                <img class="produkt" src="@Url.ObrazkiSciezka(Model.nazwa_pliku_obrazka)" />
+            </div>
+            <div id="ProduktPrawa">
+                <div id="ProduktNazwa">
+                    <h1>
+                        @Model.nazwa_produktu
+                    </h1>
+                    <h2>
+                        Nike
+                    </h2>
+                </div>
+                <div id="ProduktCena">
+                    <div>
+                        @string.Format("{0:0.##}", Model.cena_produktu)<span>PLN</span>
+                    </div>
+
+                    <a href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = Model.id_produkt})"></a>
+                </div>
+            </div>
+
+
+            <div id="ProduktOpis">
+                @Model.opis
+            </div>
+         
+            
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("DodajProdukt", "Manage", new { id_produkt = Model.id_produkt })" style="margin-top: 20px; font-weight: bold; display: block;">Edytuj</a>
+            }
+         
+    </section>
+    </div>
+ </div>
+    
+

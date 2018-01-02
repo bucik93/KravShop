@@ -1,0 +1,31 @@
+﻿<!--Ten layout będzie korzystał z tego głównego-->
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!--Będzie w widoku lista kategori z lewej strony menu kategorii-->
+<div id="ListaKategoriZawartosc">
+    @Html.Action("KategorieMenu", "Produkty")
+
+    <div id="KategorieListPrawaSekcja">
+        <div id="Breadcrumb">
+            <img src="../Content/Images/dommaly.png" />
+            <!--Ścieżka nawigacyjna-->
+            @Html.MvcSiteMap().SiteMapPath()
+        </div>
+        <!--Sekcja w której w nagłówku będę umieszczał tytuł sekcji -->
+        <section class="SekcjaKoszyk">
+            <div class="SekcjaHeader" style="margin-bottom: 0px;">
+                <h1>
+                    @RenderSection("SectionTitle", required: false)
+                </h1>
+            </div>
+            <!--Tutaj trafia zawartość widoków-->
+            @RenderBody()
+        </section>
+    </div>
+</div>
+<!--do tej ekcji odwołujemy się w widokach-->
+@section Scripts
+{
+    @RenderSection("Scripts", required: false)
+}

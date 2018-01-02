@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNet.Identity
+
+<div id="login-header">
+    <!--Jeśli użytkownik będzie zalogowany-->
+    @if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("Logoff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+            @Html.AntiForgeryToken()
+            <!--Zostanie wyświetlony link do sekcji zarządzania (wyświetlał będzie nazwę użytkownika) -->
+            <div>
+                @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+
+            </div>
+            <!--tutaj będzie wyświetlane wyloguj-->
+            <div>
+                <a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a>
+            </div>
+        }
+    }
+
+    else
+
+    {   <!--Jeśli użytkownik nie będzie zalogowany będzie wyświetlana akcja rejestracja i logowanie-->
+        <div>
+            @Html.ActionLink("Rejestracja", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+        </div>
+        <div>
+            @Html.ActionLink("Zaloguj", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        </div>
+    }
+</div>

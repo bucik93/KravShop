@@ -1,0 +1,74 @@
+﻿@model Krav_shop.Models.Zamowienie
+
+@{
+    ViewBag.Title = "Zaplac";
+    Layout = "~/Views/Shared/_RightSectionLayout.cshtml";
+}
+<!--Tutuł sekcji zamówienie-->
+@section SectionTitle{
+    <br>
+    Uzupełnij dane zamówienia
+}
+
+<!--formularz, który będzie wysyłał nasze zamówienie do metody post kontrolera koszyk i akcji zapłać -->
+@using (@Html.BeginForm("Zaplac", "Koszyk"))
+            {
+    <!--jesli dane użytkownika będą w bazie to one wyświetlą się w formularzu  jeśli będę chciał zmienić to będe mógł to zrobić-->
+    <table id="checkout-address-table">
+        <tr>
+            <!--labelka z opisem pola-->
+            <td>@Html.LabelFor(o => o.imie, "Imię:")</td>
+            <!--textbox na wprowadzenie danych-->
+            <td>@Html.TextBoxFor(o => o.imie)</td>
+            <!--sprawdzenie danych czy są poprawne tzn odpowiednia ilość znaków itp.-->
+            <td>@Html.ValidationMessageFor(o => o.imie)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.nazwisko, "Nazwisko")</td>
+            <td>@Html.TextBoxFor(o => o.nazwisko)</td>
+            <td>@Html.ValidationMessageFor(o => o.nazwisko)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.adres, "Adres")</td>
+            <td>@Html.TextBoxFor(o => o.adres)</td>
+            <td>@Html.ValidationMessageFor(o => o.adres)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.miasto, "Miasto")</td>
+            <td>@Html.TextBoxFor(o => o.miasto)</td>
+            <td>@Html.ValidationMessageFor(o => o.miasto)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.kod_pocztowy, "Kod pocztowy")</td>
+            <td>@Html.TextBoxFor(o => o.kod_pocztowy)</td>
+            <td>@Html.ValidationMessageFor(o => o.kod_pocztowy)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.telefon, "Numer telefonu")</td>
+            <td>@Html.TextBoxFor(o => o.telefon)</td>
+            <td>@Html.ValidationMessageFor(o => o.telefon)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.e_mail, "Adres e-mail")</td>
+            <td>@Html.TextBoxFor(o => o.e_mail)</td>
+            <td>@Html.ValidationMessageFor(o => o.e_mail)</td>
+        </tr>
+        <tr>
+            <td><label for="Komentarz">Uwagi</label></td>
+            <td>
+                <!--Komentarz będzie pobierany od użytkownika-->
+                <textarea cols="40" rows="3" name="Komentarz">@Model.komentarz</textarea>
+            </td>
+        </tr>
+    </table>
+    <!--tutaj będzie wyświetlane podsumowanie walidatorów-->
+    @Html.ValidationSummary()
+
+    <hr style="margin-bottom: 50px;" />
+
+                <div class="SekcjaPrzyciski">
+                    <a class="PrzyciskLink" href="">Wróć</a>
+                    <!--link do potwierdz zamówienie ewentualnie wróć -->
+                    <input type="submit" class="PrzyciskLink" style="" value="Potwierdź" />
+                </div>
+}

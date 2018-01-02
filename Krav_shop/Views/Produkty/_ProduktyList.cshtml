@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Krav_shop.Models.Produkt>
+@using Krav_shop.Infrastructure
+
+
+
+
+<ul class="ProduktyTrzyKolumny ProduktCena">
+
+    @foreach (var produkt in Model)
+    {
+        <li>
+            <article>
+                <a class="dodajDoKoszykaLink" href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = produkt.id_produkt })">
+
+                    <img src="@Url.Content("~/Content/Images/koszyk.png")" />
+                </a>
+                @if (produkt.bestseller)
+                {
+                    <div class="bestsellerFlag"></div>
+                }
+                <a class="ProduktSzczegolyLink" href="@Url.Action("Szczegoly", "Produkty", new { id = produkt.id_produkt })">
+
+                    <img src="@Url.ObrazkiSciezka(produkt.nazwa_pliku_obrazka)" />
+                    <h1>
+                        @produkt.nazwa_produktu
+                    </h1>
+                </a>
+            </article>
+        </li>
+    }
+
+</ul>
+
+

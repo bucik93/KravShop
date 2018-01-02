@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Krav_shop.Models.Zamowienie>
+@{
+    ViewBag.Title = "ListaZamowien";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div>
+    <hr />
+    <!--Nagłówek-->
+    <h2 class="manageHeader">Twoje zamówienia</h2>
+    <!--Spradzam czy mam do wyświetlenia jakieś zamówienia-->
+    <div>
+        @if (Model.Any())
+        {   <!--Tabela z zamówieniami-->
+            <table id="zamowienia-table">
+                <!--iteruję po modelu czyli po liście zamówień i pobierać pojedyńcze zamówienie  -->
+                @foreach (var zamowienie in Model)
+                {   <!--po pobraniu jednego zamówienia będę wyświetlał jego zawartość -->
+                    <!--Sprawdzam czy stan zamówienia jest nowe. Jeslie jest nowe to będę wyróżniał w css nowe zamówienie  -->
+                    <tr @if (zamowienie.stan_zamowienia == Krav_shop.Models.stan_zamowienia.nowe) { <text> class="noweZamowienie" </text>        }>
+                        <td>
+                            <!--Wyświetlam nr zamówienia, datę i stan zamówienia -->
+                            <strong>Nr zamówienia: </strong>@zamowienie.id_zamowienie
+                        </td>
+                        <td>
+                            <strong>Data: </strong>
+                            @zamowienie.data_dodania.ToString("dd-MM-yyyy")
+                        </td>
+                        <td>
+                            <strong>Stan: </strong><br />
+                            <!--Jeśli użytkownik jest adminem będzie mógł wyświetlać w dropdownliście zmianę stanu zamówienia nowe albo zrealizowane-->
+                            @if (ViewBag.UserIsAdmin)
+                            {
+                                using (Html.BeginForm("ZmianaStanuZamowienia", "Manage"))
+                                {
+                                    @Html.HiddenFor(o => zamowienie.id_zamowienie)
+                                    @Html.EnumDropDownListFor(o => zamowienie.stan_zamowienia, new { @class = "StanZamowieniaZmien" })
+                                }
+                            }
+                            else
+                            { <!--Jeśli użytkownik nie jest adminem to tylko dostanie informacje o stanie zamówienia albo nowe albo 
+                                  zrealizowane -->
+
+                                @Html.DisplayFor(o => zamowienie.stan_zamowienia)
+                            }
+                        </td>
+                        <td>
+                            <strong>Dane wysyłkowe:</strong><br />
+                            @zamowienie.imie @zamowienie.nazwisko<br />
+                            @zamowienie.adres<br />
+                            @zamowienie.kod_pocztowy @zamowienie.miasto<br />
+                        </td>
+                        <td>
+                            <strong>Uwagi: </strong><br />
+                            @zamowienie.komentarz
+                        </td>
+                        <td>
+                            <strong>Łączny koszt:</strong> @zamowienie.wartosc_zamowienia zł
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <section>
+                                <ul class="TrzyKolumnyList duzaListaProdukty-bottom">
+                                    <!--Wyświetlam pozycje zamówione-->
+                                    @foreach (var pozycjaZamowienia in zamowienie.pozycje_zamowienia)
+                                    {
+                                        <li>
+                                            <article>
+                                                <!--Bedzie można przejść do szczegółów zamówienia -->
+                                                <a class="produktSzczegolyLink" href="@Url.Action("Szczegoly", "Produkty", new { id = pozycjaZamowienia.id_produkt })">
+                                                    <img class="produkt" src="@Url.Content("~/Content/Produkty/" + pozycjaZamowienia.Produkt.nazwa_pliku_obrazka)" />
+                                                    <h1>
+                                                        @pozycjaZamowienia.Produkt.nazwa_produktu <br />
+                                                        <strong>sztuk: @pozycjaZamowienia.ilosc, łącznie: @(pozycjaZamowienia.ilosc * @pozycjaZamowienia.cena_zakupu)  zł</strong>
+                                                    </h1>
+                                                </a>
+                                            </article>
+                                        </li>
+                                    }
+                                </ul>
+                            </section>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+                <!-- nastepne zamowienie -->
+                }
+            </table>
+        }
+
+        else
+        {   <!--Jesli dany użytkownik nie zamówił nic w sklepie to będzie wyświetlał sie widok brak zamówień -->
+            <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+                Brak zamówień.
+            </div>
+        }
+    </div>
+</div>
+<!--skrypt odpowiedzialny za stan zamówienia -->
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+     <!--odwołuję sie do stanu zamówienia zmień odwołuje się do metody on change wtedy gdy nastąpi zmiana -->
+    <script>
+       
+    $(".StanZamowieniaZmien").on('change', function (e) {
+        //e.preventDefault();
+        //pobieram formularz
+        var f = $(this.form);
+        var tr = f.closest("tr");
+        var action = f.attr("action");
+        var serializedForm = f.serialize();
+
+        $.post(action, serializedForm).done(function (data) {
+            if (data == '@Krav_shop.Models.stan_zamowienia.nowe.ToString()') {
+                tr.addClass("noweZamowienie")
+            }
+            else {
+                tr.removeClass("noweZamowienie");
+            }
+          });
+    });
+    </script>
+}

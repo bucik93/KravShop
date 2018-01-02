@@ -1,0 +1,88 @@
+﻿@model Krav_shop.ViewModels.HomeViewModel
+
+@using Krav_shop.Infrastructure
+@{
+    ViewBag.Title = "Krav Maga Sklep";
+}
+
+<img id="baner" src="../Content/Images/baner2.png" />
+<nav class="katHorizontal">
+    <ul>
+    @foreach (var kategoria in Model.Kategorie)
+    {
+    <li>
+            <h2>@Html.ActionLink(kategoria.nazwa_kat, "Lista", "Produkty", new { nazwaKategori = kategoria.nazwa_kat }, null) </h2>
+        </li>
+       
+
+    }
+        </ul>
+</nav>
+
+<img id="baner" src="../Content/Images/baner3.png" />
+    @*<nav class="katHorizontal">
+            <ul>
+                @foreach (var kategoria in Model.Kategorie)
+                    {
+                    <li>
+                        <a href="@Url.Action("Lista", "Produkty", new { nazwaKategori = kategoria.nazwa_kat.ToLower() });">
+                            @kategoria.nazwa_kat
+                        </a>
+                    </li>
+                }
+            </ul>
+            <a href="link">
+                <img id="baner" src="../Content/Images/baner1.png" />
+            </a>
+        </nav>*@
+
+
+    <img src="../Content/Images/Bestsellery1.jpg" />
+    <section>
+        <ul class="ProduktyTrzyKolumny duzaListaProdukty">
+            @foreach (var bestseller in Model.Bestsellery)
+            {
+                <li>
+                    <article>
+                        <a class="dodajDoKoszykaLink" href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = bestseller.id_produkt })">
+                            <img src="../Content/Images/koszyk.png" />
+                        </a>
+                        <a class="ProduktSzczegolyLink" href="@Url.Action("Szczegoly", "Produkty", new { id = bestseller.id_produkt })">
+
+                            <img class="produkt" src="@Url.ObrazkiSciezka(bestseller.nazwa_pliku_obrazka)" />
+                            <h1>
+                                @bestseller.nazwa_produktu
+                            </h1>
+                        </a>
+                    </article>
+                </li>
+            }
+        </ul>
+    </section>
+    <img src="../Content/Images/Nowości1.jpg" />
+    <section>
+        <ul class="ProduktyTrzyKolumny duzaListaProdukty">
+            @foreach (var nowosc in Model.Nowosci)
+            {
+                <li>
+                    <article>
+                        <a class="dodajDoKoszykaLink" href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = nowosc.id_produkt })">
+                            <img src="../Content/Images/koszyk.png" />
+                        </a>
+                        <a class="ProduktSzczegolyLink" href="@Url.Action("Szczegoly", "Produkty", new { id = nowosc.id_produkt})">
+
+                            <img class="produkt" src="@Url.ObrazkiSciezka(nowosc.nazwa_pliku_obrazka)" />
+
+                            <h1>
+                                @nowosc.nazwa_produktu
+                            </h1>
+                        </a>
+                    </article>
+                </li>
+            }
+
+        </ul>
+    </section>
+
+
+

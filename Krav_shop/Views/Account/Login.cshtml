@@ -1,0 +1,74 @@
+﻿@model Krav_shop.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_RightSectionLayout.cshtml";
+}
+<!--tytuł-->
+@section SectionTitle
+{
+    <br>
+    Zaloguj się
+}
+<!--Dodaję formularz logowania-->
+<div>
+    @using (@Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+    {   <!--dodanie helpera, żeby zabezpieczyć się przed niepowolanym logowaniem z innej strony (będzie ukryte pole input)
+           będzie ono sprawdzane w kontrolerze czy to żądanie podchodzi z naszej strony-->
+        @Html.AntiForgeryToken()
+        <!--informacje walidacyjne-->
+        <div id="login-error">
+            @Html.ValidationMessage("loginerror", "")
+        </div>
+        <!--dodajemy tabelke w której będą pola odnośnie logowania (email, password)-->
+        <table id="login-table" style="margin-left: auto; margin-right: auto;">
+            <!--Pierwszy wiersz dodaję e-mail labelke, textbox i walidator, który będzie sprawdzał zgdonie z wymaganiami założonymi
+                w widoku AccountViewModel-->
+            <tr>
+                <td>@Html.LabelFor(o => o.Email, "E-mail:")</td>
+                <td>
+                    @Html.TextBoxFor(o => o.Email)
+                    <div class="login-validation-message">
+                        @Html.ValidationMessageFor(o => o.Email)
+                    </div>
+                </td>
+            </tr>
+            <!--Drugi wiersz odnośnie pola hasło, labelke, pole passwordFor czyli pole, żeby było gwiazdkowane, dodaję walidacje  -->
+            <tr>
+                <td>@Html.LabelFor(o => o.Password, "Hasło")</td>
+                <td>
+                    @Html.PasswordFor(o => o.Password)
+                    <div class="login-validation-message">
+                        @Html.ValidationMessageFor(o => o.Password)
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <!--Na końcu robię checkboxa, w którym będzie zaznacznik w którym będzie możliwość zapamiętania użytkownika, domyślnie
+                będzie zaznaczony -->
+            <tr>
+                <td colspan="3">
+                    <div class="checkbox" style="margin-bottom: 10px;">
+                        @Html.CheckBoxFor(m => m.RememberMe, new { @checked = "checked" })
+                        @Html.LabelFor(m => m.RememberMe)
+                    </div>
+                    <!--dodanie przycisku zaloguj -->
+                    <input type="submit" value="Zaloguj" class="submitLink" style="height: 40px;" />
+                </td>
+            </tr>
+        </table>
+    }
+    <!--dodanie diva jeśli nie masz konta to że można sie zarejestrować -->
+    <div style="text-align: center;">
+        <a href="@Url.Action("Register")">Nie mam jeszcze konta</a>
+    </div>
+</div>
+<!--Dodaję skrypty walidacyjne walidacja nie po stronie serwera tylko klient w poli E-mail po stronie serwera była gdy kliknąłem zaloguj wtedy pokazywał się komunikat wartość w 
+    polu e-mail nie jest prawidłowym adresem e-mail a teraz jest ok czyli jak zaczynami pisać to jest od razu sprawdzane czy jest wprowadzany odpowiedni adres e-mail-->
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

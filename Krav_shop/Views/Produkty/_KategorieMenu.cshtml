@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Krav_shop.Models.Kategoria>
+
+<nav class="KategorieVertical">
+    <ul>
+        @foreach (var kategoria in Model)
+        {
+            <li>
+                <a href="@Url.Action("Lista", "Produkty", new { nazwaKategori = kategoria.nazwa_kat.ToString()})">
+                    @kategoria.nazwa_kat
+                </a>
+
+            </li>
+        }
+    </ul>
+</nav>

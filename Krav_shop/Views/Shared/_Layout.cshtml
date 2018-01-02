@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site1.css")" rel="stylesheet" />
+    @System.Web.Optimization.Styles.Render("~/Content/themes/base/core.css")
+
+</head>
+<body>
+    <header>
+        <div style="overflow: hidden;">
+            <a id="koszykHeaderLink" href="link">
+                Koszyk (<span id="koszyk-naglowek-ilosc-elementow">@Html.Action("PobierzIloscElementowKoszyka", "Koszyk")</span>)
+                <span></span>
+            </a>
+
+            <!--Widok cząstkowy Logowanie i Rejestracja-->
+            @Html.Partial("_LoginPartial")
+
+            <a id="indexHeaderLogo" href="@Url.Content("~/")">
+                <img src="@Url.Content("~/Content/Images/logo1.png")" class="center" />
+            </a>
+        </div>
+    </header>
+
+    <div>
+        @RenderBody()
+    </div>
+    <!--Linki do stron statycznych -->
+    <footer>
+        <nav>
+            <ul>
+                <li><a href="@Url.Action("StronyStatyczne","Home", new { nazwa = "Onas" })" style="">O nas</a></li>
+                <li><a href="@Url.Action("StronyStatyczne","Home", new { nazwa = "Reklamacje" })" style="">Reklamacje</a></li>
+                <li><a href="@Url.Action("StronyStatyczne","Home", new { nazwa = "Bezpieczenstwo" })" style="">Bezpieczeństwo</a></li>
+                <li><a href="@Url.Action("StronyStatyczne","Home", new { nazwa = "Regulamin" })" style="">Regulamin</a></li>
+                <li><a href="@Url.Action("StronyStatyczne","Home", new { nazwa = "Kontakt" })" style="">Kontakt</a></li>
+            </ul>
+        </nav>
+        <div id="footerlogo1">
+        </div>
+        <div id="footercopyright1">
+            Copyright &copy; 2017 Sklep Krav Maga. All Rights Reserved
+        </div>
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

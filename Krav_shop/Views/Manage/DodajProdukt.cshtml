@@ -1,0 +1,103 @@
+﻿@model Krav_shop.ViewModels.EditProduktViewModel
+@{
+    ViewBag.Title = "DodajProdukt";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+<hr />
+<h2 class="manageHeader">Edycja produktu</h2>
+<div>
+    <!--kod sprawdzający potwierdzenie jeżeli potwierdzenie ma wartość to będę sprawdzać i ustawiac pomyslnie ustawioną zmiane -->
+    @if (Model.Potwierdzenie.HasValue && Model.Potwierdzenie.Value)
+    {
+        <div style="text-align: center; margin: 50px;">
+            Pomyślnie wprowadzono zmiany!
+        </div>
+    }
+    <!--Dodaję formularz postuje do akcji dodajprodukt kontrolera manage (enctype możliwość przesyłania z naszego formularza do aplikacji)-->
+    @using (@Html.BeginForm("DodajProdukt", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="error-summary-centered">
+            @Html.ValidationSummary()
+        </div>
+        @Html.HiddenFor(o => o.Produkt.id_produkt)
+        @Html.HiddenFor(o => o.Produkt.data_dodania)
+        @Html.HiddenFor(o => o.Produkt.nazwa_pliku_obrazka)
+
+        <div style="text-align: center;">
+            <table id="albumedit-address-table">
+                <tr>
+                    <td>@Html.LabelFor(o => o.Produkt.nazwa_produktu, "Produkt:")</td>
+                    <td>@Html.TextBoxFor(o => o.Produkt.nazwa_produktu)</td>
+                    <td>@Html.ValidationMessageFor(o => o.Produkt.nazwa_produktu)</td>
+                </tr>
+               
+                <tr>
+                    <td>@Html.LabelFor(o => o.Produkt.opis, "Opis:")</td>
+                    <td>@Html.TextBoxFor(o => o.Produkt.opis)</td>
+                    <td>@Html.ValidationMessageFor(o => o.Produkt.opis)</td>
+                </tr>
+              
+                <tr>
+                    <td>@Html.LabelFor(o => o.Kategorie, "Kategoria:")</td>
+                    <!--kontrolka przekazuje w pierszym parametrze id_kategoria (jaka wartość ma być bindowana),
+                        new select list określam co bedzie wyświetlane w drop down liście (kategorie, kategorie id będzie przypisywana
+                        do modelu bindowana, a nazwa kategorii 3 parametr to co będzie się wyświetlało w dropdown liście czyli
+                        nazwa kategorii)  Model.Kategorie.First() oznacza pobierana jest domyśnie kategoria pierwsza w dropdownliscie -->
+                    <td>@Html.DropDownListFor(m => m.Produkt.id_kategoria, new SelectList(Model.Kategorie, "id_kategoria", "nazwa_kat", Model.Kategorie.First().id_kategoria))</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(o => o.Produkt.cena_produktu, "Cena:")</td>
+                    <td>@Html.TextBoxFor(o => o.Produkt.cena_produktu)</td>
+                    <td>@Html.ValidationMessageFor(o => o.Produkt.cena_produktu)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(o => o.Produkt.bestseller, "Bestseller:")</td>
+                    <td>@Html.CheckBoxFor(o => o.Produkt.bestseller)</td>
+                    <td></td>
+                </tr>
+                <!--sprawdzam czy jestem w trybie edycji czy nie 
+                    jeśli będę w trybie edyćji to nie wyświetlaj znaczka do upload plików czyli dodawania  
+                    jeśli będziemy w trybie dodawania to wyświetl kontrolkę z możliwością dodania pliku-->
+                @if (ViewBag.EditMode == null || !ViewBag.EditMode)
+                {
+                    <tr>
+                        <td colspan="3">
+                            <div class="upload">
+                                <input type="file" name="file" />
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr>
+
+                    <td style="text-align: left">
+                        @if (ViewBag.EditMode)
+                        {
+                            if (Model.Produkt.ukryty)
+                            {
+                                <a href="@Url.Action("PokazProdukt", "Manage", new { id_produkt = Model.Produkt.id_produkt })" style="display: block; margin-top: 15px; font-weight: bold;">
+                                    Przywróć
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("UkryjProdukt", "Manage", new { id_produkt = Model.Produkt.id_produkt })" style="display: block; margin-top: 15px; font-weight: bold;">
+                                    Usuń
+                                </a>
+                            }
+                        }
+                    </td>
+
+
+                    <td style="text-align: right;">
+                        <input type="submit" value="Zapisz" class="submitLink" style="height: 40px; margin-right: 0px; margin-top: 30px; font-weight: bold;" />
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    }
+</div>

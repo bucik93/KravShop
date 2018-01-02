@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Lista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ListaKategoriZawartosc">
+    @Html.Action("KategorieMenu")
+    <div id="KategorieListPrawaSekcja">
+        <div id="Breadcrumb">
+            <img src="../Content/Images/dommaly.png" />
+            <a href="link">
+                @Html.MvcSiteMap().SiteMapPath()
+
+            </a>
+
+            @*<form id="search-form" method="get" data-ajax="true" data-ajax-target="#SekcjaListaKategori">
+                <input id="search-filter" type="search" name="searchQuery"
+                       data-autocomplete-source="@Url.Action("ProduktyPodpowiedzi")"
+                       placeholder="Wprowadź tekst, aby wyfiltrować..." />
+                <input type="submit" value="" />
+            </form>*@
+
+        </div>
+
+        <div id="SekcjaListaKategori">
+            @Html.Partial("_ProduktyList")
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery")
+}
